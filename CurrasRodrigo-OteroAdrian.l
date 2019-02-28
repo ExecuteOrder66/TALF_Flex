@@ -36,6 +36,8 @@ CHAR_HEX	\\x[0-9a-f]{1,2}	//Caracter ASCII formato hexadecimal (\x<num><num>) RE
 CHAR_OCT	\\[0-3]?[0-7]{1,2}	//Caracter ASCII formato octal (0-377)
 CARACTER	({CHAR}|{CHAR_ESCAPADO}|{CHAR_DEC}|{CHAR_HEX}|{CHAR_OCT})		
 
+COMENT	\/\/.*\n
+COMENT_VARIAS	\/\*	//Comentario de varias lineas   REVISAR
 /*palabra reservada, identificador, delimitador, operador, constante real, cadena*/
 
 %}
