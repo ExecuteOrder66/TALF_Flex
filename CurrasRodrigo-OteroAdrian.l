@@ -49,17 +49,23 @@ COMENT_VARIAS	\/\*	//Comentario de varias lineas   REVISAR
 [\n] linea++; //incrementar el numero de linea "provisional"
 
 //Identificadores
+{IDENTIFICADOR}	printf("\nlinea %d, identificador: %s", linea, yytext);
 
 //Constantes
+{ENTERO}	printf("\nlinea %d, constante entera: %s", linea, yytext);
+{DECIMAL}	printf("\nlinea %d, constante real: %s", linea, yytext);
+{EXPONENTE}	printf("\nlinea %d, constante real: %s", linea, yytext);
 
 //Caracteres
+'{CARACTER}'	printf("\nlinea %d, caracter: %s",linea,yytext);
 
 //Cadenas
 
 //Delimitadores
+{DELIMITADORES}	printf("\nlinea %d, delimitador: %s", linea, yytext);
 
 //Operadores
-
+{OPERADORES}	printf("\nlinea %d, operador: %s", linea, yytext);
 
 %%
 
@@ -71,7 +77,8 @@ int yywrap(){
 }
 
 main(){
-
-
-
+	yyin= fopen(argv[1],"r");
+	yylex();
+	printf("\n\n");
+	fclose(yyin);
 }
