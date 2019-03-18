@@ -1,27 +1,28 @@
-
 //Declaraciones
 
 %{
 int linea=1;
 string aux;
 
-PALABRA_RESERVADA {"auto", "base", "boolean", "break", "case", "catch", "class", "char",
-	"continue", "default", "do", "double", "else", "enum", "extern", "false", "finally",
-	"float", "for", "goto", "if", "include", "int", "interface", "long", "namespace",
-	"new", "override", "private", "protected", "public", "return", "sealed", "short",
-	"signed", "sizeof", "static", "struct", "switch", "this", "throw", "true", "typedef",
-	"union", "unsigned", "using", "virtual", "void", "while"}
+PALABRA_RESERVADA ("auto" | "base" | "boolean" | "break" | "case"|  "catch" | "class" | "char" |
+	"continue" | "default" | "do" | "double" | "else" | "enum" | "extern" | "false" | "finally"|
+	"float" | "for" | "goto" | "if" | "include" | "int" | "interface" | "long" | "namespace" |
+	"new" | "override" | "private" | "protected" | "public" | "return" | "sealed" | "short" |
+	"signed" | "sizeof" | "static" | "struct" | "switch" | "this" | "throw" | "true" |
+	"typedef" | "union" | "unsigned" | "using" | "virtual" | "void" | "while")
 
-DELIMITADORES {"(", ")", "{", "}", "?", ":", ";", ","}
+DELIMITADORES ("(" | ")" | "{" | "}" | "?" | ":" | ";" | ",")
 
-OPERADORES {"+", "-", "*", "/", "%", "--", "++", "*=", "/=", "%=", "+=", "-=", ".", 
-	"->", "&", "[", "]", "~", "|", "^", "<<", ">>", "<<=", ">>=", "&=", "^=", "|=",
-	"<", ">", "<=", ">=", "==", "!=", "!", "&&", "||", "=", "sizeof"} //este sizeof no se si dara problemas con el de arriba
+OPERADORES ("+" | "-" | "*" | "/" | "%" | "--" | "++" | "*=" | "/=" | "%=" | "+=" | "-=" | "." | 
+	"->" | "&" | "[" | "]" | "~" | "|" | "^" | "<<" | ">>" | "<<=" | ">>=" | "&=" | "^=" | "|=" |
+	"<" | ">" | "<=" | ">=" | "==" | "!=" | "!" | "&&" | "||" | "=" | "sizeof")
+	//este sizeof no se si dara problemas con el de arriba
 
 ENTERO	[+-]?[0-9]+
+REAL	[+-]?[0]?[Xx]?\.*[0-9]+ //con esto necesitamos que los caracteres tengan mas prioridad
 DECIMAL	[+-]?[0-9]*\.[0-9]+
-IDENTIFICADOR	[A-Za-z_][A-Za-z_0-9]+	//El id tiene como 1er char una letra o una _, REVISAR
-EXPONENTE ({ENTERO}|{DECIMAL})[Ee][+-]?{ENTERO}
+IDENTIFICADOR	[A-Za-z_][A-Za-z_0-9]+	//El id tiene como 1er char una letra o una _, PROBLEMA!!
+EXPONENTE ({ENTERO}|{DECIMAL}|{REAL})[Ee][+-]?{ENTERO}
 
 
 
@@ -31,13 +32,19 @@ CHAR_ESCAPADO	(\\'|\\?|\\\\|\\a|\\b|\\f|\\n|\\r|\\t|\\v)	//Caracter escapado REV
 
 CHAR_DEC	([0-1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])	//Caracter ASCII formato decimal
 
-CHAR_HEX	\\x[0-9a-f]{1,2}	//Caracter ASCII formato hexadecimal (\x<num><num>) REVISAR
+CHAR_HEX	[0-9][Xx][0-9A-Fa-f]{1,3}	//Caracter ASCII formato hexadecimal
+						//le quite los \\
 
 CHAR_OCT	\\[0-3]?[0-7]{1,2}	//Caracter ASCII formato octal (0-377)
-CARACTER	({CHAR}|{CHAR_ESCAPADO}|{CHAR_DEC}|{CHAR_HEX}|{CHAR_OCT})		
+CARACTER	({CHAR}|{CHAR_ESCAPADO}|{CHAR_DEC}|{CHAR_HEX}|{CHAR_OCT})
+		//no hay que poner las comillas simples?
 
 COMENT	\/\/.*\n
-COMENT_VARIAS	\/\*	//Comentario de varias lineas   REVISAR
+COMENT_VARIAS	[\/\*] | [\/\*.*\n*.*\*\/]  | [\".*\n*.*\"]	//Comentario de varias lineas  REVISAR
+			// Comentario con "// o más" o un Comentario de este estilo /*hola*/
+			//  o un Comentario entre comillas en donde sea
+			//cualquier cosa 0 o mas veces seguido de 0 o varios saltos de linea
+			//seguido de cualquier cosa 0 o mas veces 
 /*palabra reservada, identificador, delimitador, operador, constante real, cadena*/
 
 %}
@@ -47,6 +54,9 @@ COMENT_VARIAS	\/\*	//Comentario de varias lineas   REVISAR
 //Reglas
 
 [\n] linea++; //incrementar el numero de linea "provisional"
+
+//Palabra Reservada
+{PALABRA_RESERVADA} printf("\nlinea %d, palabra reservada: %s, linea, yytext);
 
 //Identificadores
 {IDENTIFICADOR}	printf("\nlinea %d, identificador: %s", linea, yytext);
