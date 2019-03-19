@@ -18,7 +18,8 @@ namespace inutil {
 		area = PI * pow(radio, 2);
 
 		/* El resultado del  ́area se saca por la "consola": se trata de un n ́umero real */
-		printf("\nArea de la \"circunferencia\": %f", area); printf("\n");
+		printf("\nArea de la \"circunferencia\": \
+ %f", area); 
 
 		return 0;
 	}
