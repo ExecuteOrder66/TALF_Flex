@@ -1,6 +1,6 @@
 %{
-int linea=1;
-string aux;
+	int linea=1;
+	string aux;
 %}
 %x COM
 
@@ -45,39 +45,27 @@ COMENT_VARIAS	\/\*	//Comentario de varias lineas  REVISAR
 			//  o un Comentario entre comillas en donde sea
 			//cualquier cosa 0 o mas veces seguido de 0 o varios saltos de linea
 			//seguido de cualquier cosa 0 o mas veces 
-/*palabra reservada, identificador, delimitador, operador, constante real, cadena*/
-
+/*pala*/
 
 
 %%
 
-//Reglas
-
 [\n] linea++; //incrementar el numero de linea "provisional"
 
-//Palabra Reservada
-{PALABRA_RESERVADA} printf("\nlinea %d, palabra reservada: %s, linea, yytext);
+{PALABRA_RESERVADA} printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 
-//Identificadores
 {IDENTIFICADOR}	printf("\nlinea %d, identificador: %s", linea, yytext);
 
-//Constantes
 {ENTERO}	printf("\nlinea %d, constante entera: %s", linea, yytext);
 {DECIMAL}	printf("\nlinea %d, constante real: %s", linea, yytext);
 {EXPONENTE}	printf("\nlinea %d, constante real: %s", linea, yytext);
 
-//Caracteres
 '{CARACTER}'	printf("\nlinea %d, caracter: %s",linea,yytext);
 
-//Cadenas
-
-//Delimitadores
 {DELIMITADORES}	printf("\nlinea %d, delimitador: %s", linea, yytext);
 
-//Operadores
 {OPERADORES}	printf("\nlinea %d, operador: %s", linea, yytext);
 
-//Comentarios
 {COMENT}	linea++;
 
 {COMENT_VARIAS}	BEGIN(COM);
