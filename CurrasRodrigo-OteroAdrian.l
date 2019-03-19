@@ -3,7 +3,7 @@
 %{
 int linea=1;
 string aux;
-
+%}
 %x COM
 
 PALABRA_RESERVADA ("auto" | "base" | "boolean" | "break" | "case"|  "catch" | "class" | "char" |
@@ -49,7 +49,7 @@ COMENT_VARIAS	\/\*	//Comentario de varias lineas  REVISAR
 			//seguido de cualquier cosa 0 o mas veces 
 /*palabra reservada, identificador, delimitador, operador, constante real, cadena*/
 
-%}
+
 
 %%
 
