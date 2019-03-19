@@ -30,7 +30,7 @@ EXPONENTE ({ENTERO}|{DECIMAL}|{REAL})[Ee][+-]?{ENTERO}
 
 CHAR	[A-Za-z,;.:-_+*!.#$%&¬=?¿¡/]	//Caracter, iran dentro de comillas simples al reconocerlos
 
-CHAR_ESCAPADO	(\\'|\\?|\\\\|\\a|\\b|\\f|\\n|\\r|\\t|\\v)	//Caracter escapado REVISAR no estoy seguro de los \a \b \f y \¨
+CHAR_ESCAPADO	(\\'|\\"|\\?|\\\\|\\n|\\r|\\t|\\v)	//Caracter escapado REVISAR 
 
 CHAR_DEC	([0-1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])	//Caracter ASCII formato decimal
 
