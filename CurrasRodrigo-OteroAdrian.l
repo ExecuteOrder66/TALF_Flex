@@ -1,5 +1,3 @@
-//Declaraciones
-
 %{
 int linea=1;
 string aux;
