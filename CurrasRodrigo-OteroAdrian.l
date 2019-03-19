@@ -4,6 +4,8 @@
 int linea=1;
 string aux;
 
+%x COM
+
 PALABRA_RESERVADA ("auto" | "base" | "boolean" | "break" | "case"|  "catch" | "class" | "char" |
 	"continue" | "default" | "do" | "double" | "else" | "enum" | "extern" | "false" | "finally"|
 	"float" | "for" | "goto" | "if" | "include" | "int" | "interface" | "long" | "namespace" |
@@ -40,7 +42,7 @@ CARACTER	({CHAR}|{CHAR_ESCAPADO}|{CHAR_DEC}|{CHAR_HEX}|{CHAR_OCT})
 		//no hay que poner las comillas simples?
 
 COMENT	\/\/.*\n
-COMENT_VARIAS	[\/\*] | [\/\*.*\n*.*\*\/]  | [\".*\n*.*\"]	//Comentario de varias lineas  REVISAR
+COMENT_VARIAS	\/\*	//Comentario de varias lineas  REVISAR
 			// Comentario con "// o más" o un Comentario de este estilo /*hola*/
 			//  o un Comentario entre comillas en donde sea
 			//cualquier cosa 0 o mas veces seguido de 0 o varios saltos de linea
@@ -77,6 +79,13 @@ COMENT_VARIAS	[\/\*] | [\/\*.*\n*.*\*\/]  | [\".*\n*.*\"]	//Comentario de varias
 //Operadores
 {OPERADORES}	printf("\nlinea %d, operador: %s", linea, yytext);
 
+//Comentarios
+{COMENT}	linea++;
+
+{COMENT_VARIAS}	BEGIN(COM);
+<COM>\n		linea++;
+<COM>.		;
+<COM>\*\/	BEGIN 0;
 %%
 
 //Routinas User
