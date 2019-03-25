@@ -26,7 +26,7 @@ IDENTIFICADOR	[A-Za-z_][A-Za-z_0-9]+
 EXPONENTE	({MANTISA})[Ee][+-]?{ENTERO}+
 
 
-CHAR	[A-Za-z,;.:-_+*!.#$%&¬=?¿¡/0-9]	[^'\n\\]
+CHAR	[A-Za-z,;.:-_+*!.#$%&¬=?¿¡/0-9^'\(\)\/<>@~\{\}\|\[\]`\n\\]
 
 CHAR_ESCAPADO	(\'|\"|\?|\\|\n|\r|\t|\v) \\['"?\\nrtv]	
 
@@ -35,9 +35,9 @@ CHAR_OCT	\\[0-3]?[0-7]{1,2}
 
 CARACTER	({CHAR}|{CHAR_ESCAPADO}|{CHAR_HEX}|{CHAR_OCT})
 		
-CHAR_ESCAPADO_CAD	(\'|\?|\r|\t|\v|\\\")
+CHAR_ESCAPADO_CAD	\\['"?\\nrtv]
 
-CADENA	({CHAR}|{CHAR_ESCAPADO_CAD}|{CHAR_OCT}|{CHAR_HEX}|" ")*
+CADENA	({CHAR}|{CHAR_ESCAPADO_CAD}|{CHAR_OCT}|{CHAR_HEX})*
 
 COMENT	\/\/.*\n
 COMENT_VARIAS	\/\*	
@@ -47,7 +47,7 @@ COMENT_VARIAS	\/\*
 [\n]	linea++;
 
 \"	BEGIN(CAD);strcat(cadena,yytext);
-<CAD>\\\n		linea++;strcat(cadena,yytext);
+<CAD>\\\n	linea++;strcat(cadena,yytext);
 <CAD>\"		BEGIN 0;strcat(cadena,yytext);printf("\nlinea %d, cadena: %s", linea, cadena);strcpy(cadena,"");
 <CAD>{CADENA}	strcat(cadena, yytext);
 
@@ -73,7 +73,9 @@ COMENT_VARIAS	\/\*
 <COM>.		;
 <COM>\*\/	BEGIN 0;
 " "|\t|\n	;
+
 .	printf("\n linea %d, error: %s",linea,yytext);
+
 %%
 
 
